@@ -64,6 +64,7 @@ const ManyActions = ({ adapter }: { adapter: ActionAdapter }) => {
 
       const fetchedActions = [];
       try {
+        // get all Listings
         const accounts = await program.account.listingData.all();
         
         setListings(accounts);
@@ -74,6 +75,7 @@ const ManyActions = ({ adapter }: { adapter: ActionAdapter }) => {
             modifiedUrl.searchParams.append('nftMint', account.account.nftMint);
             modifiedUrl.searchParams.append('price', account.account.price);
             modifiedUrl.searchParams.append('isRented', account.account.isRented);
+            modifiedUrl.searchParams.append('buyerKey', publicKey.toString());
   
             try {
               const action = await Action.fetch(modifiedUrl.toString());
@@ -142,6 +144,7 @@ const ShareBlink = ({ action, adapter }) => {
         </button>
       </div>
       <Blink
+        stylePreset="custom"
         action={action}
         websiteText={websiteText}
         adapter={adapter}

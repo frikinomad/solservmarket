@@ -25,3 +25,56 @@ body {
     text-wrap: balance;
   }
 } 
+
+.blink.custom{
+  --blink-bg-primary: #f5f7fa; /* Soft light background */
+  --blink-button: #007bff; /* Strong, primary blue */
+  --blink-button-disabled: #b0c4de; /* Disabled blue shade */
+  --blink-button-hover: #0056b3; /* Darker blue on hover */
+  --blink-button-success: #28a745; /* Green for success */
+  --blink-icon-error: #dc3545; /* Red for errors */
+  --blink-icon-error-hover: #c82333; /* Darker red on hover */
+  --blink-icon-primary: #6c757d; /* Subtle gray for icons */
+  --blink-icon-primary-hover: #495057; /* Slightly darker gray */
+  --blink-icon-warning: #ffc107; /* Yellow for warnings */
+  --blink-icon-warning-hover: #e0a800; /* Darker yellow on hover */
+  --blink-input-bg: #ffffff; /* Clean white for inputs */
+  --blink-input-stroke: #ced4da; /* Light gray for input borders */
+  --blink-input-stroke-disabled: #e9ecef; /* Disabled input border */
+  --blink-input-stroke-error: #dc3545; /* Red border on error */
+  --blink-input-stroke-hover: #adb5bd; /* Gray on hover */
+  --blink-input-stroke-selected: #007bff; /* Blue for selected input */
+  --blink-stroke-error: #dc3545; /* Error red stroke */
+  --blink-stroke-primary: #007bff; /* Primary blue stroke */
+  --blink-stroke-secondary: #6c757d; /* Secondary gray stroke */
+  --blink-stroke-warning: #ffc107; /* Warning yellow stroke */
+  --blink-text-brand: #007bff; /* Blue for brand text */
+  --blink-text-button: #212529; /* Dark gray for button text */
+  --blink-text-button-disabled: #6c757d; /* Disabled text */
+  --blink-text-button-success: #28a745; /* Green for success text */
+  --blink-text-error: #dc3545; /* Red for error text */
+  --blink-text-error-hover: #c82333; /* Darker red on hover */
+  --blink-text-input: #212529; /* Dark text for input */
+  --blink-text-input-disabled: #6c757d; /* Disabled text in input */
+  --blink-text-input-placeholder: #6c757d; /* Gray placeholder text */
+  --blink-text-link: #007bff; /* Blue for links */
+  --blink-text-link-hover: #0056b3; /* Darker blue for links on hover */
+  --blink-text-primary: #212529; /* Default dark text */
+  --blink-text-secondary: #6c757d; /* Secondary text color */
+  --blink-text-success: #28a745; /* Green success text */
+  --blink-text-warning: #ffc107; /* Yellow warning text */
+  --blink-text-warning-hover: #e0a800; /* Darker yellow on hover */
+  --blink-transparent-error: #dc35451a; /* Transparent red for errors */
+  --blink-transparent-grey: #6c757d1a; /* Light gray transparency */
+  --blink-transparent-warning: #ffc1071a; /* Transparent yellow for warnings */
+
+  /* Border Radius */
+  --blink-border-radius-rounded-lg: 0.25rem; /* Subtle rounded corners */
+  --blink-border-radius-rounded-xl: 0.375rem;  /* Slightly larger rounding */
+  --blink-border-radius-rounded-2xl: 0.5rem;  /* Noticeable rounding */
+  --blink-border-radius-rounded-button: 1.5rem;  /* More rounded button */
+  --blink-border-radius-rounded-input: 1rem;   /* Soft pill shape for inputs */
+      
+  /* Box-shadow */
+  --blink-shadow-container: 0px 2px 4px rgba(0, 123, 255, 0.1), 0px 2px 12px rgba(0, 123, 255, 0.15); /* Subtle blue shadow */
+}
