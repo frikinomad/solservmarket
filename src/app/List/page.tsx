@@ -466,6 +466,7 @@ function App() {
 const ManyActions = ({ adapter }: { adapter: ActionAdapter }) => {
   const apiUrls = useMemo(() => ([
     'http://localhost:3000/api/actions/createListing',
+    'http://solserv.vercel.app/api/actions/createListing',
   ]), []);
   
   const [actions, setActions] = useState<Action[]>([]);
