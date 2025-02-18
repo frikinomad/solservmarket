@@ -48,9 +48,7 @@ const ManyActions = ({ adapter }: { adapter: ActionAdapter }) => {
   const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
   useEffect(() => {
-    if(wallet.connected){
-      initializeProgram();
-    }
+    initializeProgram();
   }, [publicKey]);
 
   const initializeProgram = async () => {

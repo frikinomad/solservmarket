@@ -26,10 +26,7 @@ function App() {
   const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
   useEffect(() => {
-    if (publicKey) {
-      initializeProgram();
-      setError('');
-    }
+    initializeProgram();
   }, [publicKey]);
 
   const handleClose = () => {
@@ -45,7 +42,7 @@ function App() {
       await fetchOnRental();
       await fetchListings();
     } catch (err) {
-      console.log("Failed to initialize program: " + err.message);
+      console.log("Failed to initialize program Re-Connect Wallet");
     }
   };
 

@@ -22,9 +22,7 @@ const RentedNfts = () => {
     const [copied, setCopied] = useState();
 
     useEffect(() => {
-        if (publicKey) {
-          initializeProgram();
-        }
+        initializeProgram();
     }, [publicKey]);
     
 
