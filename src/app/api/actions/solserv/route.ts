@@ -9,6 +9,12 @@ import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, 
 import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createSyncNativeInstruction, getAccount, getAssociatedTokenAddressSync, NATIVE_MINT, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { AnchorProvider, BN, Idl, Program, Wallet } from '@coral-xyz/anchor';
 
+import { fetchDigitalAsset, mplTokenMetadata } from '@metaplex-foundation/mpl-token-metadata'
+import { mplCore, fetchAsset } from '@metaplex-foundation/mpl-core'
+import { createUmi } from '@metaplex-foundation/umi-bundle-defaults'
+import { mockStorage } from '@metaplex-foundation/umi-storage-mock';
+import { fromWeb3JsPublicKey } from '@metaplex-foundation/umi-web3js-adapters'
+
 
 // DO NOT FORGET TO INCLUDE THE `OPTIONS` HTTP METHOD, THIS WILL ENSURE CORS WORKS FOR BLINKS
 const headers = createActionHeaders();
@@ -19,15 +25,14 @@ export const OPTIONS = async (req: Request) => {
 
 
 export const GET = async (req: Request) => {
+
+    
     try {
         const requestUrl = new URL(req.url);
         const nftMint: string = requestUrl.searchParams.get('nftMint'); // Get nftAddress from URL
         const price: string = requestUrl.searchParams.get('price'); // Get nftAddress from URL
         const isRented: string = requestUrl.searchParams.get('isRented'); // Get nftAddress from URL
-        isRented
         const buyerKey: string = requestUrl.searchParams.get('buyerKey'); // Get nftAddress from URL
-
-        // TODO: I can just get NFT Mint then use Nft mint & "listing" as seed to get all the rest of the value ??
         
         // causing storing in lamports
         const priceInSol = parseFloat(price) / 1e9;
@@ -40,21 +45,51 @@ export const GET = async (req: Request) => {
         });
         const baseHref = new URL(`/api/actions/solserv?${params}`, requestUrl.origin,).toString();
         
-        // const nftPublicKey = new PublicKey(nftMint);
         
-        // TODO: Fetch NFT metadata, also validate the image link first
-        const metadata = {
-            name: "rishi",
-            description: "rishi", 
-            image: "https://s3.ap-south-1.amazonaws.com/mynfttestbucket/TS8TFwQCIeMOGECeu8v8", 
+        // Fetch NFT metadata, also validate the image link first
+
+        // NFT core for testing
+        // const nftMintKey = fromWeb3JsPublicKey(new PublicKey("2JnmvdtU9yvBPakevLVAQAKj5JGcG55nkAGmpmePVfjq"))
+        const nftMintKey = fromWeb3JsPublicKey(new PublicKey(nftMint))
+        const umi = createUmi('https://api.devnet.solana.com/'); 
+        umi.use(mockStorage());
+        umi.use(mplTokenMetadata());
+        umi.use(mplCore());
+        
+        let assetMetadata;
+        try {
+            const asset = await fetchDigitalAsset(umi, nftMintKey);
+            assetMetadata = asset.metadata;
+        } catch (error) {
+            try {
+                assetMetadata = await fetchAsset(umi, nftMintKey);
+            } catch (err) {
+                console.error("Failed to fetch asset metadata:", err);
+                return null;
+                // TODO: shouldn't be null
+            }
         }
+
+        console.log(assetMetadata);
+        
+        const metadata = {
+            name: assetMetadata.name,
+            image: assetMetadata.uri, 
+            // image: "https://s3.ap-south-1.amazonaws.com/mynfttestbucket/TS8TFwQCIeMOGECeu8v8", 
+        }
+
+        // const metadata = {
+        //     name: "rishi",
+        //     description: "rishi", 
+        //     image: "https://s3.ap-south-1.amazonaws.com/mynfttestbucket/TS8TFwQCIeMOGECeu8v8", 
+        // }
+
 
         const payload: ActionGetResponse = {
             type: 'action',
             title: `${metadata.name}`,
             icon: `${metadata.image}`,
-            description: `Price per day: ${priceInSol}SOL
-            NFT: ${nftMint}`,
+            description: `Price per day: ${priceInSol}SOL.  NFT Mint: ${nftMint}`,
             label: 'Transfer',  // will be ignored but needs to be here
             disabled: isRented === "true",
             links: {

@@ -76,7 +76,8 @@ const ManyActions = ({ adapter }: { adapter: ActionAdapter }) => {
         // get all Listings
         const accounts = await program.account.listingData.all();
         const availableAccounts = accounts.filter((acc) => {
-          const bool = acc.account.isRented === false;
+          // TODO: change to false xD, just for some testing to true
+          const bool = acc.account.isRented === true;
           return bool;
         });
         
