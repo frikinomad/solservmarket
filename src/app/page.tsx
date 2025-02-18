@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles, Waves, Zap } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const HomePage = () => {
 

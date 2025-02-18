@@ -8,12 +8,12 @@ import {
 import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY, Transaction } from '@solana/web3.js';
 import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createSyncNativeInstruction, getAccount, getAssociatedTokenAddressSync, NATIVE_MINT, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { AnchorProvider, BN, Idl, Program, Wallet } from '@coral-xyz/anchor';
-import { mplTokenMetadata } from '@metaplex-foundation/mpl-token-metadata'
 
 
 // DO NOT FORGET TO INCLUDE THE `OPTIONS` HTTP METHOD, THIS WILL ENSURE CORS WORKS FOR BLINKS
 const headers = createActionHeaders();
 export const OPTIONS = async (req: Request) => {
+    req
     return new Response(null, { headers });
 };
 
@@ -24,11 +24,10 @@ export const GET = async (req: Request) => {
         const nftMint: string = requestUrl.searchParams.get('nftMint'); // Get nftAddress from URL
         const price: string = requestUrl.searchParams.get('price'); // Get nftAddress from URL
         const isRented: string = requestUrl.searchParams.get('isRented'); // Get nftAddress from URL
+        isRented
         const buyerKey: string = requestUrl.searchParams.get('buyerKey'); // Get nftAddress from URL
 
         // TODO: I can just get NFT Mint then use Nft mint & "listing" as seed to get all the rest of the value ??
-        
-        console.log(price);
         
         // causing storing in lamports
         const priceInSol = parseFloat(price) / 1e9;
@@ -236,7 +235,7 @@ export const POST = async (req: Request) => {
 
         const simulationResult = await connection.simulateTransaction(transaction);
         if (simulationResult.value.err) {
-            const errorLogs = simulationResult.value.logs || [];
+            // const errorLogs = simulationResult.value.logs || [];
             // const errorMessage = errorLogs.find(log => log.includes("Error Message:")) || "No specific error message found."; 
             // console.log("errorMessage", errorMessage)
             console.error("Simulation failed:", simulationResult.value.err);

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useMemo, useEffect, act } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import '@dialectlabs/blinks/index.css';
-import { Action, Blink, type ActionAdapter, useActionsRegistryInterval, MultiValueActionComponent} from "@dialectlabs/blinks";
+import { Action, Blink, type ActionAdapter, useActionsRegistryInterval} from "@dialectlabs/blinks";
 import { useActionSolanaWalletAdapter } from "@dialectlabs/blinks/hooks/solana"
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import { clusterApiUrl, Connection } from "@solana/web3.js";
 import { AnchorProvider, Program, setProvider, Idl } from "@coral-xyz/anchor";
 import { useWallet } from "@solana/wallet-adapter-react";
 import idl from '../../utils/solservprogram.json'
