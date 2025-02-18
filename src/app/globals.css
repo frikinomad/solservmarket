@@ -26,6 +26,7 @@ body {
   }
 } 
 
+
 .blink.custom{
   --blink-bg-primary: #f5f7fa; /* Soft light background */
   --blink-button: #007bff; /* Strong, primary blue */

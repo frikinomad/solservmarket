@@ -26,7 +26,7 @@ export const GET = async (req: Request) => {
         const payload: ActionGetResponse = {
             type: 'action',
             title: 'Create Listing',
-            icon: `https://play-lh.googleusercontent.com/eGZyT2QXznxa00g94a7b-CyX1D-1K9qEMAbJZ-f6Hkovj4WnKdujsVsV3A_an2IJsbE`,
+            icon: 'https://play-lh.googleusercontent.com/eGZyT2QXznxa00g94a7b-CyX1D-1K9qEMAbJZ-f6Hkovj4WnKdujsVsV3A_an2IJsbE',
             description: `Provide Price in SOL & NFT mint address to be Listed`,
             label: 'Transfer',  // will be ignored but needs to be here
             links: {
@@ -37,7 +37,7 @@ export const GET = async (req: Request) => {
                         parameters: [
                             {
                                 name: 'price', // parameter name in the `href` above
-                                label: 'Price(SOL)', // placeholder of the text input
+                                label: 'Price(SOL) per day', // placeholder of the text input
                                 required: true,
                                 type: 'number'
                             },
@@ -91,8 +91,10 @@ export const POST = async (req: Request) => {
         const receivedPublicKey = urlParams.get('publicKey');
         const publicKey = new PublicKey(receivedPublicKey);
         const receivedPrice = urlParams.get("price");
-        const price = Number(receivedPrice);
-
+        // TODO: IMP
+        const price = parseFloat(receivedPrice) * 1e9; // Multiply by 10^9 for Solana (converting SOL to lamports)
+        // console.log((new BN(price)).toString());
+        
 
         const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
         const programId = new PublicKey('Bc5CiKaQJm8hjcDoJGgJiScfQMr1DQvoWf2Z3NMxFzxV'); // Program ID    
@@ -129,13 +131,9 @@ export const POST = async (req: Request) => {
         
         const tx = new Transaction(); 
 
-        // Convert the price to lamports by multiplying by 10^9 and then use BN
-        const priceInLamports = new BN(Math.round(price * 1e9)); 
-        console.log(priceInLamports.toString()); // This will give you the price in lamports
-
         const instruction = await program.methods
             .createListing(
-                new BN(priceInLamports),
+                new BN(price),
             )
             .accounts({
                 owner: publicKey,
@@ -161,7 +159,8 @@ export const POST = async (req: Request) => {
             if (simulationResult.value.err) {
                 const errorLogs = simulationResult.value.logs || [];
                 const errorMessage = errorLogs.find(log => log.includes("Error Message:")) || "No specific error message found.";
-                return;
+                console.log(errorLogs);
+                console.log(errorMessage);
             } else {
                 console.log("Simulation successful.");
             }

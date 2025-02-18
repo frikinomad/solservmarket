@@ -28,6 +28,9 @@ export const GET = async (req: Request) => {
 
         // TODO: I can just get NFT Mint then use Nft mint & "listing" as seed to get all the rest of the value ??
         
+        console.log(price);
+        
+        // causing storing in lamports
         const priceInSol = parseFloat(price) / 1e9;
 
         const params = new URLSearchParams({
@@ -51,7 +54,8 @@ export const GET = async (req: Request) => {
             type: 'action',
             title: `${metadata.name}`,
             icon: `${metadata.image}`,
-            description: `${metadata.description}, Price per day: ${priceInSol}, Already Rented: ${isRented} \n NFT: ${nftMint}`,
+            description: `Price per day: ${priceInSol}SOL
+            NFT: ${nftMint}`,
             label: 'Transfer',  // will be ignored but needs to be here
             disabled: isRented === "true",
             links: {
@@ -233,9 +237,10 @@ export const POST = async (req: Request) => {
         const simulationResult = await connection.simulateTransaction(transaction);
         if (simulationResult.value.err) {
             const errorLogs = simulationResult.value.logs || [];
-            const errorMessage = errorLogs.find(log => log.includes("Error Message:")) || "No specific error message found."; 
-            console.error("errorMessage", errorMessage)
-            throw Error(errorMessage)
+            // const errorMessage = errorLogs.find(log => log.includes("Error Message:")) || "No specific error message found."; 
+            // console.log("errorMessage", errorMessage)
+            console.error("Simulation failed:", simulationResult.value.err);
+            console.log("Simulation logs:", simulationResult.value.logs); // More detailed logs
         } else {
             console.log("Simulation successful.");
         }

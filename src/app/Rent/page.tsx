@@ -8,16 +8,26 @@ import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
 import { AnchorProvider, Program, setProvider, Idl } from "@coral-xyz/anchor";
 import { useWallet } from "@solana/wallet-adapter-react";
 import idl from '../../utils/solservprogram.json'
-import { Copy, ExternalLink } from 'lucide-react';
+import { Copy, ExternalLink, Loader2 } from 'lucide-react';
 
 const Home = () => {
   const { isRegistryLoaded } = useActionsRegistryInterval();
   const { adapter } = useActionSolanaWalletAdapter('https://api.devnet.solana.com');
 
   return (
-    <div className="bg-white min-h-screen">
-      {isRegistryLoaded ? <ManyActions adapter={adapter} /> : <p>Loading actions...</p>}
-    </div> 
+    // <div className="bg-white min-h-screen">
+    //   {isRegistryLoaded ? <ManyActions adapter={adapter} /> : <p>Loading actions...</p>}
+    // </div> 
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+      {isRegistryLoaded ? (
+        <ManyActions adapter={adapter} />
+      ) : (
+        <div className="text-center py-4">
+          <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-blue-500" />
+          <p className="text-gray-600">Loading actions...</p>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -66,10 +76,14 @@ const ManyActions = ({ adapter }: { adapter: ActionAdapter }) => {
       try {
         // get all Listings
         const accounts = await program.account.listingData.all();
+        const availableAccounts = accounts.filter((acc) => {
+          const bool = acc.account.isRented === false;
+          return bool;
+        });
         
         setListings(accounts);
 
-        for (const account of accounts) { 
+        for (const account of availableAccounts) { 
           for (const url of apiUrls) {
             const modifiedUrl = new URL(url);
             modifiedUrl.searchParams.append('nftMint', account.account.nftMint);
@@ -96,13 +110,24 @@ const ManyActions = ({ adapter }: { adapter: ActionAdapter }) => {
   }, [apiUrls, program]);
 
 
-  return (
+  // return (
+  //   <div className="flex flex-wrap gap-4 justify-start items-start">
+  //     {actions.map(action => (
+  //       <ShareBlink key={action.url} action={action} adapter={adapter} />
+  //     ))}
+  //   </div>
+  // );  
+  return !actions || actions.length === 0 ? (
+    <div className="flex justify-center items-center h-40 text-blue-600 text-lg font-semibold border border-blue-300 rounded-lg bg-blue-50">
+      No Listings Up for Grabs
+    </div>
+  ) : (
     <div className="flex flex-wrap gap-4 justify-start items-start">
       {actions.map(action => (
         <ShareBlink key={action.url} action={action} adapter={adapter} />
       ))}
     </div>
-  );  
+  );
 }
 
 const ShareBlink = ({ action, adapter }) => {

@@ -100,6 +100,70 @@
       ]
     },
     {
+      "name": "delist",
+      "discriminator": [
+        55,
+        136,
+        205,
+        107,
+        107,
+        173,
+        4,
+        31
+      ],
+      "accounts": [
+        {
+          "name": "listing",
+          "writable": true
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "listing"
+          ]
+        },
+        {
+          "name": "escrow_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing.nft_mint",
+                "account": "ListingData"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner_nft_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "end_rental",
       "discriminator": [
         80,
@@ -112,6 +176,11 @@
         20
       ],
       "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
         {
           "name": "listing",
           "writable": true
@@ -288,6 +357,21 @@
       "code": 6004,
       "name": "InvalidEndDate",
       "msg": "End date must be after start date"
+    },
+    {
+      "code": 6005,
+      "name": "Unauthorized",
+      "msg": "Unauthorized: Only the owner or renter can end the rental"
+    },
+    {
+      "code": 6006,
+      "name": "ListingCurrentlyRented",
+      "msg": "NFT is Currently Rented & Cannot be closed."
+    },
+    {
+      "code": 6007,
+      "name": "InvalidOwner",
+      "msg": "Invalid Owner."
     }
   ],
   "types": [
@@ -333,6 +417,12 @@
           {
             "name": "bump",
             "type": "u8"
+          },
+          {
+            "name": "total_rental_amount",
+            "type": {
+              "option": "u64"
+            }
           }
         ]
       }
