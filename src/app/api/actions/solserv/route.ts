@@ -223,19 +223,24 @@ export const POST = async (req: Request) => {
         }
     
         // Transfer SOL to WSOL ATA if balance is insufficient
-        const balance = await connection.getTokenAccountBalance(userWSOLAccount);
-        if ((balance.value.uiAmount || 0) < (parseFloat(price)/LAMPORTS_PER_SOL)) {
-            console.log('yup, need funding');
-            const transferIx = SystemProgram.transfer({
-                fromPubkey: walletKey,
-                toPubkey: userWSOLAccount,
-                lamports: Math.ceil(parseFloat(price))      // already in lamports
-            });
-            transaction.add(transferIx);
-        
-            // TODO: Sync native SOL to wrapped SOL, should this be before Final Tx
-            const syncNativeIx = createSyncNativeInstruction(userWSOLAccount);
-            transaction.add(syncNativeIx);
+        try{
+            const balance = await connection.getTokenAccountBalance(userWSOLAccount);
+            console.log(balance);
+            
+            if ((balance.value.uiAmount || 0) < (parseFloat(price)/LAMPORTS_PER_SOL) || (balance.value.uiAmount < 2)) {
+                const transferIx = SystemProgram.transfer({
+                    fromPubkey: walletKey,
+                    toPubkey: userWSOLAccount,
+                    lamports: Math.ceil(parseFloat(price))      // already in lamports
+                });
+                transaction.add(transferIx);
+            
+                // TODO: Sync native SOL to wrapped SOL, should this be before Final Tx
+                const syncNativeIx = createSyncNativeInstruction(userWSOLAccount);
+                transaction.add(syncNativeIx);
+            }
+        }catch(error){
+            console.log(error);
         }
     
         const instruction = await program.methods

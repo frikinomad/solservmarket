@@ -47,6 +47,11 @@ const HomePage = () => {
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </a>
+              <a href="/Vision" className="group px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl hover:opacity-90 transition-all">
+                <span className="flex items-center justify-center text-lg font-bold text-white">
+                  Vision
+                </span>
+              </a>
             </div>
           </div>
         </div>
@@ -57,13 +62,13 @@ const HomePage = () => {
             <div className="p-8 rounded-xl bg-white/5 backdrop-blur border border-white/10 hover:bg-white/10 transition-all">
               <h2 className="text-3xl font-bold text-white mb-4">Our Mission</h2>
               <p className="text-lg text-purple-100">
-                To democratize digital asset ownership and empower creators worldwide through innovative blockchain technology, making digital trading accessible and secure for everyone.
+                We're building the world's first social-native rental protocol that eliminates platform barriers and complex processes, enabling anyone to rent digital assets instantly through a tweet or click. Starting with gaming assets, we're creating a future where accessing valuable content and items is as simple as sending a message, all while empowering creators to earn from their assets seamlessly.
               </p>
             </div>
             <div className="p-8 rounded-xl bg-white/5 backdrop-blur border border-white/10 hover:bg-white/10 transition-all">
               <h2 className="text-3xl font-bold text-white mb-4">Our Vision</h2>
               <p className="text-lg text-purple-100">
-                To build a thriving global ecosystem where digital creation, ownership, and trading become seamless parts of everyday life, fostering a new era of digital innovation and creativity.
+                To transform the internet into a unified, frictionless marketplace where every digital interaction becomes an opportunity for value exchange, making any asset instantly accessible through simple social connections.
               </p>
             </div>
           </div>
