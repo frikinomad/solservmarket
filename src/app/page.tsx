@@ -1,6 +1,24 @@
+"use client";
+
 import { ArrowRight } from 'lucide-react';
+import {useState} from 'react';
+
+const projects = [
+  {
+    id: 1,
+    title: 'Solserv - NFT Rental Platform',
+    description: "The problem is that renting or accessing digital and physical assets today requires jumping between multiple platforms, creating separate accounts, and dealing with complex processes. The solution is to build a universal rental system that works directly through social media - imagine seeing a streamer's rare game outfit and being able to rent it instantly with just a tweet, or reading an article preview and accessing the full content with a single click, all without leaving your preferred platform or creating new accounts. This system would make any digital or physical asset easily rentable through simple social interactions, turning the entire internet into a seamless marketplace.",
+    image: '/solserv.png',
+    tech: ['Solana', 'Next.js', 'Blinks', 'Anchor Program'],
+    liveUrl: 'https://solserv.vercel.app/',
+    githubUrl: '',
+    videoId: '-0YgI58rVBA'
+  },
+]
 
 const HomePage = () => {
+
+  const [showVideo, setShowVideo] = useState(false);
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-violet-900 via-indigo-900 to-blue-900">
@@ -52,6 +70,29 @@ const HomePage = () => {
                   Vision
                 </span>
               </a>
+            </div>
+            <div className="relative w-full aspect-video mb-8">
+              {!showVideo ? (
+                <>
+                  {projects[0].videoId && 
+                    <button
+                      onClick={() => setShowVideo(true)}
+                      className="absolute inset-0 flex items-center justify-center bg-black/50 transition-opacity rounded-xl"
+                    >
+                      <span className="p-4 rounded-full bg-emerald-500/20 text-emerald-400">
+                        Play Demo
+                      </span>
+                    </button>
+                  }
+                </>
+              ) : (
+                <iframe
+                  className="w-full h-full rounded-xl"
+                  src={`https://www.youtube.com/embed/${projects[0].videoId}?autoplay=1`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              )}
             </div>
           </div>
         </div>
