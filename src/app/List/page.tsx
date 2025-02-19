@@ -42,7 +42,7 @@ function App() {
       await fetchOnRental();
       await fetchListings();
     } catch (err) {
-      console.log("Failed to initialize program Re-Connect Wallet");
+      setError("Failed to initialize program Re-Connect Wallet");
     }
   };
 
