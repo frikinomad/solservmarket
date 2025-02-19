@@ -27,6 +27,7 @@ function App() {
 
   useEffect(() => {
     initializeProgram();
+    setError(null)
   }, [publicKey]);
 
   const handleClose = () => {
