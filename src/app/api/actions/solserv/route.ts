@@ -59,6 +59,7 @@ export const GET = async (req: Request) => {
         let assetMetadata;
         try {
             const asset = await fetchDigitalAsset(umi, nftMintKey);
+            // just getting the metadata cause core only returns the Metadata
             assetMetadata = asset.metadata;
         } catch (error) {
             try {
@@ -69,8 +70,6 @@ export const GET = async (req: Request) => {
                 // TODO: shouldn't be null
             }
         }
-
-        console.log(assetMetadata);
         
         const metadata = {
             name: assetMetadata.name,
