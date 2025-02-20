@@ -109,14 +109,23 @@ const ManyActions = ({ adapter }: { adapter: ActionAdapter }) => {
   }, [apiUrls, program]);
 
 
-  // return (
+   
+  // return !actions || actions.length === 0 ? (
+  //   <div className="flex justify-center items-center h-40 text-blue-600 text-lg font-semibold border border-blue-300 rounded-lg bg-blue-50">
+  //     No Listings Up for Grabs
+  //   </div>
+  // ) : (
   //   <div className="flex flex-wrap gap-4 justify-start items-start">
   //     {actions.map(action => (
   //       <ShareBlink key={action.url} action={action} adapter={adapter} />
   //     ))}
   //   </div>
-  // );  
-  return !actions || actions.length === 0 ? (
+  // );
+  return !publicKey ? (
+    <div className="flex justify-center items-center h-40 text-red-600 text-lg font-semibold border border-red-300 rounded-lg bg-red-50">
+      Please connect wallet
+    </div>
+  ) : !actions || actions.length === 0 ? (
     <div className="flex justify-center items-center h-40 text-blue-600 text-lg font-semibold border border-blue-300 rounded-lg bg-blue-50">
       No Listings Up for Grabs
     </div>
@@ -127,6 +136,7 @@ const ManyActions = ({ adapter }: { adapter: ActionAdapter }) => {
       ))}
     </div>
   );
+  
 }
 
 const ShareBlink = ({ action, adapter }) => {
