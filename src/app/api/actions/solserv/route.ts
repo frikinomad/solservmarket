@@ -183,7 +183,6 @@ export const POST = async (req: Request) => {
             [Buffer.from("escrow"), nftAddress.toBuffer()],
             programId
         );
-
     
         // User WSOL Associated Token Account (ATA)
         const userWSOLAccount = getAssociatedTokenAddressSync(
@@ -221,28 +220,30 @@ export const POST = async (req: Request) => {
             );
             transaction.add(createEscrowAtaIx);
         }
-    
-        // Transfer SOL to WSOL ATA if balance is insufficient
-        try{
-            const balance = await connection.getTokenAccountBalance(userWSOLAccount);
-            console.log(balance);
-            
-            if ((balance.value.uiAmount || 0) < (parseFloat(price)/LAMPORTS_PER_SOL) || (balance.value.uiAmount < 2)) {
-                const transferIx = SystemProgram.transfer({
-                    fromPubkey: walletKey,
-                    toPubkey: userWSOLAccount,
-                    lamports: Math.ceil(parseFloat(price))      // already in lamports
-                });
-                transaction.add(transferIx);
-            
-                // TODO: Sync native SOL to wrapped SOL, should this be before Final Tx
-                const syncNativeIx = createSyncNativeInstruction(userWSOLAccount);
-                transaction.add(syncNativeIx);
-            }
-        }catch(error){
-            console.log(error);
-        }
-    
+
+        
+        // Transfer SOL to WSOL ATA if balance is insufficient        
+        // Always transfer SOL and sync - the sync will fail if no transfer was needed
+        
+        // TODO: days was a crucial step that I was missing
+        const days = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
+
+        // Removed check balance cause if first time then will give error
+        // const balance = await connection.getTokenAccountBalance(userWSOLAccount);        
+        // if ((balance.value.uiAmount || 0) < (parseFloat(price)/LAMPORTS_PER_SOL) || (balance.value.uiAmount < 2)) {
+            const transferIx = SystemProgram.transfer({
+                fromPubkey: walletKey,
+                toPubkey: userWSOLAccount,
+                lamports: (days * Number(price))
+            });
+            transaction.add(transferIx);
+        
+            const syncNativeIx = createSyncNativeInstruction(userWSOLAccount);
+            transaction.add(syncNativeIx);
+        // }
+        
+
+        
         const instruction = await program.methods
             .rentNft(
                 new BN(startTimestamp),

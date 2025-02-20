@@ -27,7 +27,7 @@ export const GET = async (req: Request) => {
             type: 'action',
             title: 'Create Listing',
             icon: 'https://play-lh.googleusercontent.com/eGZyT2QXznxa00g94a7b-CyX1D-1K9qEMAbJZ-f6Hkovj4WnKdujsVsV3A_an2IJsbE',
-            description: `Provide Price in SOL & NFT mint address to be Listed`,
+            description: `Provide Price in SOL & NFT mint address to be Listed. NFT CORE not supported`,
             label: 'Transfer',  // will be ignored but needs to be here
             links: {
                 actions: [
